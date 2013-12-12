@@ -1,7 +1,7 @@
 require 'sinatra'
 require "sinatra/cookies"
 require 'omniauth-facebook'
-require 'fb_graph'
+require 'koala'
 require './helpers/get_post'
 
 enable :sessions
@@ -19,27 +19,54 @@ OmniAuth.config.on_failure = lambda do |env|
 end
 
 # This might come from DB
-APP_ID = "153304591365687"
-APP_SECRET = "7a7663099ccb62f180d985ba1252a3e2"
+APP_ID = "1402943853278306"
+APP_SECRET = "a90c7e1ad7fecc7366d94fff2ed4d93b"
 
 use OmniAuth::Builder do
-  provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream' }
+  provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream,user_birthday,friends_birthday' }
 end
+
+get_post '/find_friend' do
+  graph = Koala::Facebook::API.new(session['fb_token'])
+  @profile = graph.get_object("me")
+  friends  =  graph.get_connections("me", "friends",:fields=>"gender, birthday")
+  suggestion = []
+  puts @profile["birthday"]
+  my_dob = Date.strptime @profile["birthday"], '%m/%d/%Y'
+  friends.each do |friend|
+    begin
+      friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+      if @profile['gender'] == 'male' && friend['gender'] == 'female'
+        if friend_dob.year <= my_dob.year && friend_dob.year >= my_dob.year-5
+          suggestion << friend
+        end
+      elsif @profile['gender'] == 'female'
+        if(params[:gender] == 'all') || (params[:gender] == 'female' && friend['gender'] == 'female')
+          if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
+            suggestion << friend
+          end
+        end
+      end 
+    rescue Exception => e
+      puts e.message
+    end
+  end
+  @friend = suggestion[Random.rand(suggestion.count)]
+  @friend = graph.get_object(@friend['id'])
+  puts @friend.inspect
+  #erb :friend
+end   
 
 # This content is accessible for everyone
 # but only people logged in with FB credentials
 #   would be able to Like links and the page
 get_post '/' do
-  @articles = []
-  @articles << {:title => 'Getting Started with Heroku', :url => 'https://devcenter.heroku.com/articles/quickstart'}
-  @articles << {:title => 'Deploying Rack-based apps in Heroku', :url => 'http://docs.heroku.com/rack'}
-  @articles << {:title => 'Learn Ruby in twenty minutes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
-
-  erb :index
+ erb :index
 end
 
 # This is called after successful authentication via /auth/facebook/
 get '/auth/facebook/callback' do
+
   fb_auth = request.env['omniauth.auth']
   session['fb_auth'] = fb_auth
   session['fb_token'] = cookies[:fb_token] = fb_auth['credentials']['token']
@@ -95,15 +122,3 @@ def clear_session
   session['fb_error'] = nil
   cookies[:fb_token] = nil
 end
-
-__END__
-
-@@ dialog_oauth
-<script>
-  var oauth_url = 'https://www.facebook.com/dialog/oauth/';
-  oauth_url += '?client_id=153304591365687';
-  oauth_url += '&redirect_uri=' + encodeURIComponent('<%=settings.redirect_uri%>');
-  oauth_url += '&scope=email, status_update, publish_stream'
-
-  window.top.location = oauth_url;
-</script>
