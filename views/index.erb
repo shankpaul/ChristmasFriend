@@ -1,35 +1,26 @@
-<%=session['fb_error']%><br />
-<% if session['fb_auth'] %>
-        <a href='logout'><img src='images/fb_logout_button.png'></a>
-<% else %>
-        <a href='login'><img src='images/fb_login_button.png'></a>
-<% end %>
-<%= 
-	  if session['fb_auth']
-	   graph = Koala::Facebook::API.new(session['fb_token'])
-    @profile = graph.get_object("me")
-     friends  =  graph.get_connections("me", "friends",:fields=>"birthday")
-     @profile["image"] = graph.get_picture(@profile["id"])
-    @profile.inspect
-    friends.inspect
-end
-     %>
 <div id="xmasapp">
-	<h1>Xmas Friend App</h1>
+	<h1>Xmas Friend App
+		<a href='logout' class="not-me right">Not <%= @profile["first_name"] %></a>
+	</h1>
 	<div class="content">
-		<h2><%= 'Hello, ' + session['fb_auth']['info']['first_name'] + ' Welcome to xmas app  ' if session['fb_token']  %></h2>
+		<h2><%= 'Hello, ' + @profile["first_name"] + ' Welcome to xmas app  ' unless @profile.nil?  %></h2>
 
 		<div class="img-area">
 
-			<img src="<%=@profile["image"]%>">
+			<img src='<%= @profile["image"]  unless @profile.nil? %>'>
 
 		</div>
-		<form action="/find_friend" method="post">
-			<% if @profile['gender'] == 'female'%>
+		<form action="/friend" method="post">
+
+			<%
+			unless @profile.nil? 
+				if @profile['gender'] == 'female'  %>
 				<div class="gender"><input type="radio" value="female" name="gender"> Girls Only 
 					<input type="radio" value="all" name="gender" checked="checked" > Mixed 
 				</div>
-			<% end %>
+				<% end 
+			end
+			%>
 			<input class="xmas-btn" value="Find Your Friend" type="submit">
 		</form>
 	</div>

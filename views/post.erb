@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta property="og:title" content="Find Your Christmas Friend"/>
+	    <meta property="og:type" content="website"/>
+	    <meta property="og:image" content="http://"/>
+	    <meta property="og:url" content="http://"/>	    
+	    <link href="css/style.css" rel="stylesheet">
+		<title>Cristmas Friend</title>
+		<style>
+			body { font-family: Arial; font-size: 20px ;}
+			a { text-decoration: none; color: #333; }
+			.logout a { color: #2554C7; font-size: 15px; }
+			.article { font-size: 1.2em; }
+			.like_site { font-size: 0.8em }
+		</style>
+	</head>
+	<body>
+		<div id="xmasapp">
+	<h1>Xmas Friend App
+		<a href='logout' class="not-me right">Not <%= @profile["first_name"] %></a>
+	</h1>
+	<div class="content">
+		<h2>
+			<%= 'Hai , ' + @profile["first_name"] + ' , Please give some gift to '+ @friend['first_name'] unless  @friend.nil?  %>
+		</h2>
+
+		<div class="img-area">
+
+			<div class="left xmas-cap" >
+				<img src="images/cap.png">
+				<img src='<%= @profile["image"]  unless @profile.nil? %>'>
+			</div>
+
+			<div class="friendship left"> + </div>
+
+			<div class="left xmas-cap">
+				<img src="images/cap.png">
+				<img src='<%= @friend["image"]  unless @friend.nil? %>'>
+			</div>
+			<br style="clear:both" />
+		</div>
+		<br style="clear:both" />
+	</div>
+</div>
+	</body>
+</html>
