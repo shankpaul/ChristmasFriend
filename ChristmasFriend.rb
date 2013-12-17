@@ -16,6 +16,9 @@ set :protection, :except => :frame_options
 configure do
   set :redirect_uri, nil
 end
+
+BASE_URL = "http://localhost:9292/"
+
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
 end
@@ -29,9 +32,36 @@ use OmniAuth::Builder do
   provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream,user_birthday,friends_birthday' }
 end
 
-#--------------Find your friend page------------
-get_post '/friend' do
+get '/post' do
+  token = params[:token]
+  friend = params[:friend]
+  me = params[:me]
+  convert_to_image token,friend,me
+  
+end 
+
+get '/convert' do
+  token = params[:token]
+  friend = params[:friend]
+  me = params[:me]
   graph = Koala::Facebook::API.new(session['fb_token'])
+  @profile = graph.get_object("me")
+  @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
+  @friend = graph.get_object(friend)
+  @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
+  erb :post
+
+
+end 
+
+
+
+
+#--------------Find your friend page------------
+get '/friend' do
+  graph = Koala::Facebook::API.new(session['fb_token'])
+  @token = session['fb_token']
+  puts @token
   @profile = graph.get_object("me")
   @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
   friends  =  graph.get_connections("me", "friends",:fields=>"gender, birthday")
@@ -50,10 +80,10 @@ get_post '/friend' do
   end
   @friend = suggestion[Random.rand(suggestion.count)]
   @friend = graph.get_object(@friend['id'])
-   @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
+  @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
+
   puts @friend.inspect
- convert_to_image
-  erb :friend
+ erb :friend
   
 end   
 
@@ -130,9 +160,8 @@ def clear_session
   cookies[:fb_token] = nil
 end
 
-def convert_to_image
-  # puts File.read('./views/post.html')
-   # IMGKit.new(File.new('./views/post.html')).to_file('./file.jpg')
-   str = render_to_string  ('./views/post.erb')
-   puts str
+def convert_to_image token,friend,me
+  # kit = IMGKit.new("#{BASE_URL}convert?token=#{token}&friend=#{friend}&me=#{me}")
+  kit = IMGKit.new("http://localhost:9292/convert?token=CAAT7ZBFIDtGIBAHds7o0RjZC8pxzkpfhqWI9n3iHZCQCjvoE4nPHCIZA03vuoicmhnZB9gZAnvcFZBcx9E0PJAcIM2BAWqcldZBhpxkpDV25pdUrJ6ieuPuZBHFM2OjEG5R2A49YBfVMUBOYeMmC5cDm5MUPRBTQQHS1ZA8LaTvuRfOVOL3jNRWECxh41m3mVHaaUZD&friend=100002749468179&me=100000206949854")
+  kit.to_file('file.jpg')
 end

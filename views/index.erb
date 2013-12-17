@@ -1,28 +1,20 @@
-<div id="xmasapp">
-	<h1>Xmas Friend App
-		<a href='logout' class="not-me right">Not <%= @profile["first_name"] %></a>
-	</h1>
-	<div class="content">
-		<h2><%= 'Hello, ' + @profile["first_name"] + ' Welcome to xmas app  ' unless @profile.nil?  %></h2>
-
-		<div class="img-area">
-
-			<img src='<%= @profile["image"]  unless @profile.nil? %>'>
-
-		</div>
-		<form action="/friend" method="post">
-
-			<%
-			unless @profile.nil? 
-				if @profile['gender'] == 'female'  %>
-				<div class="gender"><input type="radio" value="female" name="gender"> Girls Only 
-					<input type="radio" value="all" name="gender" checked="checked" > Mixed 
-				</div>
-				<% end 
-			end
-			%>
-			<input class="xmas-btn" value="Find Your Friend" type="submit">
-		</form>
+<div style="margin:0;padding:0;background: #b40202 url(images/bg.png) no-repeat center top;">
+	<div style="width:480px;height:auto;margin:0 auto;padding-top:250px;min-height:150px">
+	<div style="width:150px;height:150px;margin:0 auto;position:relative;">
+	<img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+	<div style="width:150px;height:150px;overflow:hidden;">
+		<img style="width:100%" src='<%= @profile["image"]  unless @profile.nil? %>'>
 	</div>
-</div>
+	</div>
+	<div style="width:195px;height:51px;margin:15px auto;position:relative;">
+		<a href="friend">
+			<img src="images/btn-find.png" />
+		</a>
+			<a href='logout' class="not-me right" style="color:red">Not <%= @profile["first_name"] %></a>
+	</div>
+	</div>
+	<div style="width:701px;height:198px;margin:0 auto;background: #b40202 url(images/footer.png) no-repeat left top;">
+		
+	</div>
 
+</div>

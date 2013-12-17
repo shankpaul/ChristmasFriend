@@ -1,47 +1,21 @@
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<meta property="og:title" content="Find Your Christmas Friend"/>
-	    <meta property="og:type" content="website"/>
-	    <meta property="og:image" content="http://"/>
-	    <meta property="og:url" content="http://"/>	    
-	    <link href="css/style.css" rel="stylesheet">
-		<title>Cristmas Friend</title>
-		<style>
-			body { font-family: Arial; font-size: 20px ;}
-			a { text-decoration: none; color: #333; }
-			.logout a { color: #2554C7; font-size: 15px; }
-			.article { font-size: 1.2em; }
-			.like_site { font-size: 0.8em }
-		</style>
-	</head>
-	<body>
-		<div id="xmasapp">
-	<h1>Xmas Friend App
-		<a href='logout' class="not-me right">Not <%= @profile["first_name"] %></a>
-	</h1>
-	<div class="content">
-		<h2>
-			<%= 'Hai , ' + @profile["first_name"] + ' , Please give some gift to '+ @friend['first_name'] unless  @friend.nil?  %>
-		</h2>
-
-		<div class="img-area">
-
-			<div class="left xmas-cap" >
-				<img src="images/cap.png">
-				<img src='<%= @profile["image"]  unless @profile.nil? %>'>
-			</div>
-
-			<div class="friendship left"> + </div>
-
-			<div class="left xmas-cap">
-				<img src="images/cap.png">
-				<img src='<%= @friend["image"]  unless @friend.nil? %>'>
-			</div>
-			<br style="clear:both" />
-		</div>
-		<br style="clear:both" />
-	</div>
+<div style="width:900px;height:333px;margin:0 auto;background: url(images/bg-share.png) no-repeat center top;">
+  <div style="height:150px;padding:80px 150px;">
+    <div style="position:relative;float:left;margin-right:90px;"> <img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+     <div style="width:140px;height:140px;overflow:hidden;">
+        <img style="width:100%;border:5px #fff solid;" src='<%= @profile["image"]  unless @profile.nil? %>'>
+      
+     </div>
+    </div>
+    <div style="position:relative;float:left;"> 
+      <img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+      <div style="width:140px;height:140px;overflow:hidden;">
+        <img style="width:100%;border:5px #fff solid;" src='<%= @friend["image"]  unless @friend.nil? %>'>
+      
+     </div>
+    </div>
+    <div style="clear:both;"></div>
+     <h1 style="text-align:left;font-size:28px;color:#fff;text-shadow: 0px 2px 5px #000000;margin:0;padding:20px 0;font-family: 'Lobster', Tahoma, cursive;font-weight:normal;width: 600px;margin-left: 10px;">
+   Sanu is your Christmas Friend
+   </h1>
+  </div>
 </div>
-	</body>
-</html>

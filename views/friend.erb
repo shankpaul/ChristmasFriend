@@ -1,27 +1,32 @@
-<div id="xmasapp">
-	<h1>Xmas Friend App
-		<a href='logout' class="not-me right">Not <%= @profile["first_name"] %></a>
-	</h1>
-	<div class="content">
-		<h2>
-			<%= 'Hai , ' + @profile["first_name"] + ' , Please give some gift to '+ @friend['first_name'] unless  @friend.nil?  %>
-		</h2>
-
-		<div class="img-area">
-
-			<div class="left xmas-cap" >
-				<img src="images/cap.png">
-				<img src='<%= @profile["image"]  unless @profile.nil? %>'>
-			</div>
-
-			<div class="friendship left"> + </div>
-
-			<div class="left xmas-cap">
-				<img src="images/cap.png">
-				<img src='<%= @friend["image"]  unless @friend.nil? %>'>
-			</div>
-			<br style="clear:both" />
+<div style="margin:0;padding:0;background: #b40202 url(images/bg.png) no-repeat center top;">
+<div style="width:480px;height:auto;margin:0 auto;padding-top:250px;min-height:150px">
+  <div style="width:420px;height:150px;margin:0 auto;">
+    <div style="position:relative;float:left;"> <img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+      <div style="width:150px;height:150px;overflow:hidden;"> 
+      	<img style="width:100%" src='<%= @profile["image"]  unless @profile.nil? %>'>
+      </div>
+    </div>
+    <div style="position:relative;float:right;"> <img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+      <div style="width:150px;height:150px;overflow:hidden;"> 
+      	<img style="width:100%;" src='<%= @friend["image"]  unless @friend.nil? %>'>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<div style="width:650px;height:auto;margin:0 auto;background: url(images/bg-content.png) repeat-y left top;">
+<div style="margin:10px 0 0 0;"> 
+  <div style="width:172px;height:100px;margin:0 auto;position:relative;">
+  <img src="images/gift.png" style="position:absolute;top:-50px;" />
+  </div>
+   </div>
+   <h1 style="text-align:center;font-size:28px;color:#b40202;margin:0;padding:10px 0;font-family: 'Lobster', Tahoma, cursive;font-weight:normal;width: 600px;margin-left: 30px;">
+   <%= @friend['first_name'] %> is your Christmas Friend
+   </h1>
+</div>
+<div style="width:701px;height:198px;margin:0 auto;background: #b40202 url(images/footer.png) no-repeat left top;">
+<div align="center">
+			<a href="post?token=<%= @token %>&friend=<%= @friend['id'] %>&me=<%= @profile['id'] %>" >Post in FB</a>
 		</div>
-		<br style="clear:both" />
-	</div>
+ </div>
 </div>
