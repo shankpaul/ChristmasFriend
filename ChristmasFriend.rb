@@ -17,7 +17,8 @@ configure do
   set :redirect_uri, nil
 end
 
-BASE_URL = "http://localhost:9292"
+BASE_URL = "http://192.168.2.22:9292"
+APP_URL = "http://192.168.2.22:9292"
 
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
@@ -32,6 +33,12 @@ use OmniAuth::Builder do
   provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream,user_birthday,friends_birthday' }
 end
 
+get '/about' do
+  erb :about
+end
+
+
+
 get '/post' do
    unless(session['friend'].nil?)
    friend = session['friend']
@@ -41,11 +48,12 @@ get '/post' do
     @friend = graph.get_object(friend)
     @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
 
-    kit = IMGKit.new(erb :post,quality: 100,width: 900)
+    kit = IMGKit.new(erb :post, quality: 100)
     file = "post_pic/#{@profile["id"]}.jpg"
     kit.to_file(file)
-    graph.put_picture(file, {:message => "Message"})
-     erb :post
+    # image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. Find your christmas friend using - <a href='#{APP_URL}'>ChristmasFriend</a>"})
+    # graph.put_connections(image['id'], 'tags', {"to" => @freind['id']})
+    erb :post
 end
   
 end 
