@@ -17,7 +17,7 @@ configure do
   set :redirect_uri, nil
 end
 
-@BASE_URL = "http://localhost:9292"
+BASE_URL = "http://localhost:9292"
 
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
@@ -41,8 +41,9 @@ get '/post' do
     @friend = graph.get_object(friend)
     @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
 
-    kit = IMGKit.new(erb :post)
-    kit.to_file('file.jpg')
+    kit = IMGKit.new(erb :post,quality: 100,width: 900)
+    file = "post_pic/#{@profile["id"]}.jpg"
+    kit.to_file(file)
      erb :post
 end
   
