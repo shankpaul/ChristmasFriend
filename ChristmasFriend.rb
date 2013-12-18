@@ -17,7 +17,7 @@ configure do
   set :redirect_uri, nil
 end
 
-BASE_URL = "http://localhost:9292/"
+@BASE_URL = "http://localhost:9292"
 
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
@@ -33,27 +33,20 @@ use OmniAuth::Builder do
 end
 
 get '/post' do
-  token = params[:token]
-  friend = params[:friend]
-  me = params[:me]
-  convert_to_image token,friend,me
+   unless(session['friend'].nil?)
+   friend = session['friend']
+   graph = Koala::Facebook::API.new(session['fb_token'])
+    @profile = graph.get_object("me")
+    @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
+    @friend = graph.get_object(friend)
+    @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
+
+    kit = IMGKit.new(erb :post)
+    kit.to_file('file.jpg')
+     erb :post
+end
   
 end 
-
-get '/convert' do
-  token = params[:token]
-  friend = params[:friend]
-  me = params[:me]
-  graph = Koala::Facebook::API.new(session['fb_token'])
-  @profile = graph.get_object("me")
-  @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
-  @friend = graph.get_object(friend)
-  @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
-  erb :post
-
-
-end 
-
 
 
 
@@ -81,7 +74,7 @@ get '/friend' do
   @friend = suggestion[Random.rand(suggestion.count)]
   @friend = graph.get_object(@friend['id'])
   @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
-
+  session['friend'] = @friend['id']
   puts @friend.inspect
  erb :friend
   
@@ -158,10 +151,4 @@ def clear_session
   session['fb_token'] = nil
   session['fb_error'] = nil
   cookies[:fb_token] = nil
-end
-
-def convert_to_image token,friend,me
-  # kit = IMGKit.new("#{BASE_URL}convert?token=#{token}&friend=#{friend}&me=#{me}")
-  kit = IMGKit.new("http://localhost:9292/convert?token=CAAT7ZBFIDtGIBAHds7o0RjZC8pxzkpfhqWI9n3iHZCQCjvoE4nPHCIZA03vuoicmhnZB9gZAnvcFZBcx9E0PJAcIM2BAWqcldZBhpxkpDV25pdUrJ6ieuPuZBHFM2OjEG5R2A49YBfVMUBOYeMmC5cDm5MUPRBTQQHS1ZA8LaTvuRfOVOL3jNRWECxh41m3mVHaaUZD&friend=100002749468179&me=100000206949854")
-  kit.to_file('file.jpg')
 end

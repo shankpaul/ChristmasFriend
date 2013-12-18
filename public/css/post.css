@@ -1,0 +1,8 @@
+.bg
+{
+	
+	width:900px;
+	height:333px;
+	margin:0 auto;
+	background: url(htp://localhost:9292/images/bg-share.png) no-repeat center top;
+}

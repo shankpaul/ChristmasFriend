@@ -1,21 +1,21 @@
-<div style="width:900px;height:333px;margin:0 auto;background: url(images/bg-share.png) no-repeat center top;">
+<div style="width:900px;  height:333px;  margin:0 auto;  background: url(<%= @BASE_URL %>/images/bg-share.png) no-repeat center top;">
   <div style="height:150px;padding:80px 150px;">
-    <div style="position:relative;float:left;margin-right:90px;"> <img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+    <div style="position:relative;float:left;margin-right:90px;"> <img src="<%= @BASE_URL %>/images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
      <div style="width:140px;height:140px;overflow:hidden;">
-        <img style="width:100%;border:5px #fff solid;" src='<%= @profile["image"]  unless @profile.nil? %>'>
+        <img style="width:100%;border:0px #fff solid;" src='<%= @profile["image"]  unless @profile.nil? %>'>
       
      </div>
     </div>
     <div style="position:relative;float:left;"> 
-      <img src="images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
+      <img src="<%= @BASE_URL %>/images/santahat.png"  style="position:absolute;top:-15px;left:-50px;" />
       <div style="width:140px;height:140px;overflow:hidden;">
-        <img style="width:100%;border:5px #fff solid;" src='<%= @friend["image"]  unless @friend.nil? %>'>
+        <img style="width:100%;border:0px #fff solid;" src='<%= @friend["image"]  unless @friend.nil? %>'>
       
      </div>
     </div>
     <div style="clear:both;"></div>
      <h1 style="text-align:left;font-size:28px;color:#fff;text-shadow: 0px 2px 5px #000000;margin:0;padding:20px 0;font-family: 'Lobster', Tahoma, cursive;font-weight:normal;width: 600px;margin-left: 10px;">
-   Sanu is your Christmas Friend
+   <%= @friend["first_name"] %> is your Christmas Friend
    </h1>
   </div>
 </div>
