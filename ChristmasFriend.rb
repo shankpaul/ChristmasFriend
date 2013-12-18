@@ -44,6 +44,7 @@ get '/post' do
     kit = IMGKit.new(erb :post,quality: 100,width: 900)
     file = "post_pic/#{@profile["id"]}.jpg"
     kit.to_file(file)
+    graph.put_picture(file, {:message => "Message"})
      erb :post
 end
   
