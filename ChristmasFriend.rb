@@ -19,8 +19,8 @@ end
 
 
 
-BASE_URL = "http://localhost:9292"
-APP_URL = "http://localhost.22:9292"
+BASE_URL = "https://xmasfriend.herokuapp.com"
+APP_URL = "https://xmasfriend.herokuapp.com"
 @no_footer = false
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
