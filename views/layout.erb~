@@ -22,7 +22,9 @@
 <% unless @no_footer %>
 <div style="text-align:center;color:#FFF;font-size:15px;"><a style="color:#FFF;font-size:15px;" href="about">About Us</a> | 
 <a style="color:#FFF;font-size:15px;" href="<%= BASE_URL %>">ChristmasFriend V 1.0.0</a> 
-<% unless  session['fb_token'].nil? %>|
+
+<% unless  session['fb_token'].nil? %>
+|
 <a style="color:#FFF;font-size:15px;" href="logout">Logout</a>
 <% end %>
 </div>

@@ -146,7 +146,13 @@ get '/login' do
   end
 end
 
-get '/logout' do	
+get '/logout' do
+	unless session['friend'].nil?
+	   friend = session['friend']
+	   file = "post_pic/#{friend}.jpg"
+	   delete_poster file
+	end
+  
   clear_session
   redirect '/'
 end
