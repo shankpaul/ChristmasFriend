@@ -1,6 +1,6 @@
 require 'imgkit'
 IMGKit.configure do |config|
-	config.wkhtmltoimage = './bin/wkhtmltoimage'
+	config.wkhtmltoimage = './bin/64/wkhtmltoimage'
 	config.default_options = {
 		:quality => 60
 	}	
