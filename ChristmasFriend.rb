@@ -12,7 +12,7 @@ require './helpers/get_post'
 #-----------------------------------------------
 
 enable :sessions
-#set :protection, :except => :frame_options
+set :protection, :except => :frame_options
 #disable :protection
 
 #after do
