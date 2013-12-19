@@ -16,7 +16,8 @@ enable :sessions
 #disable :protection
 
 after do
-  response.headers({ 'X-Frame-Options' => 'ALLOW-FROM apps.facebook.com' })
+  response.headers['X-Frame-Options'] = 'ALLOW-FROM apps.facebook.com' 
+#  response.headers({ 'X-Frame-Options' => 'ALLOW-FROM apps.facebook.com' })
 end
 
 configure do
