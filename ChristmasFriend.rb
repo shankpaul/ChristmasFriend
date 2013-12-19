@@ -139,7 +139,6 @@ end
 
 #------------------------------------------------------------
 get '/login' do
-response.headers['X-Frame-Options'] = 'SAMEORIGIN'
   if settings.redirect_uri
     # inside FB
     erb :dialog_oauth
@@ -163,7 +162,7 @@ post '/canvas/' do
   redirect '/auth/failure' if request.params['error'] == 'access_denied'
 
   # see /login
-  settings.redirect_uri = 'https://apps.facebook.com/ChristmasFriend/'
+  settings.redirect_uri = 'https://apps.facebook.com/xmasfriend/'
 
   # Canvas apps send the 'code' parameter
   # We use it to know if we're accessing the app from FB's iFrame
