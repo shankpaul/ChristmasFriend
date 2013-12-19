@@ -12,7 +12,9 @@ require './helpers/get_post'
 #-----------------------------------------------
 
 enable :sessions
-set :protection, :except => :frame_options
+#set :protection, :except => :frame_options
+disable :protection
+
 configure do
   set :redirect_uri, nil
 end
