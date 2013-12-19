@@ -20,7 +20,7 @@ end
 
 
 BASE_URL = "https://xmasfriend.herokuapp.com"
-APP_URL = "https://xmasfriend.herokuapp.com"
+APP_URL = "https://apps.facebook.com/xmasfriend"
 @no_footer = false
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
@@ -137,6 +137,7 @@ end
 
 #------------------------------------------------------------
 get '/login' do
+response.headers['X-Frame-Options'] = 'SAMEORIGIN'
   if settings.redirect_uri
     # inside FB
     erb :dialog_oauth
