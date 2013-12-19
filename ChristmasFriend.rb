@@ -15,10 +15,10 @@ enable :sessions
 #set :protection, :except => :frame_options
 #disable :protection
 
-after do
-  response.headers['X-Frame-Options'] = 'ALLOW-FROM apps.facebook.com' 
-#  response.headers({ 'X-Frame-Options' => 'ALLOW-FROM apps.facebook.com' })
-end
+#after do
+ # response.headers['X-Frame-Options'] = 'ALLOW-FROM apps.facebook.com' 
+ # response.headers({ 'X-Frame-Options' => 'ALLOW-FROM apps.facebook.com' })
+#end
 
 configure do
   set :redirect_uri, nil
@@ -113,16 +113,15 @@ end
 
 #-----------------Home page ---------------------------------- 
 get_post '/' do
-  verify	
+	
   if session['fb_token']
     graph = Koala::Facebook::API.new(session['fb_token'])
     @profile = graph.get_object("me")
     @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
-    erb :index
-  else
-   redirect '/login'
+  #  else
+ #  redirect '/login'
  end
-
+	  erb :index
 end
 
 #---------Landing page with fb data from successfull Facebook auth ---------
