@@ -27,7 +27,7 @@ end
 
 
 BASE_URL = "https://xmasfriend.herokuapp.com"
-APP_URL = "https://apps.facebook.com/xmasfriend"
+APP_URL = "https://apps.facebook.com/myxmasfriend"
 #APP_URL = "https://apps.facebook.com/1402943853278306"
 
 @no_footer = false
@@ -36,8 +36,8 @@ OmniAuth.config.on_failure = lambda do |env|
 end
 
 #---------------App configurations---------------
-APP_ID = "1402943853278306"
-APP_SECRET = "a90c7e1ad7fecc7366d94fff2ed4d93b"
+APP_ID = "703686396317377"
+APP_SECRET = "a0d5ccef0a6b03623869c9a832e6f614"
 #------------------------------------------------
 
 use OmniAuth::Builder do
