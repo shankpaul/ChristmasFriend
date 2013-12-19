@@ -13,7 +13,11 @@ require './helpers/get_post'
 
 enable :sessions
 #set :protection, :except => :frame_options
-disable :protection
+#disable :protection
+
+after do
+  headers({ 'X-Frame-Options' => 'ALLOW-FROM apps.facebook.com' })
+end
 
 configure do
   set :redirect_uri, nil
