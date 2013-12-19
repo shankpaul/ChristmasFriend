@@ -94,10 +94,17 @@ get '/friend' do
   my_dob = Date.strptime @profile["birthday"], '%m/%d/%Y'
   friends.each do |friend|
     begin
-      friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
-      if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
-        suggestion << friend
-      end      
+      if @profile['gender']=="male" && friend['gender']=="female" 	
+	friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+        if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-2
+   		suggestion << friend
+        end      
+      elsif @profile['gender']=="female"
+	friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+        if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
+ 		suggestion << friend
+        end      
+     end
     rescue Exception => e
       puts e.message
     end
