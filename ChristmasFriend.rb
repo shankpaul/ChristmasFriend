@@ -70,7 +70,7 @@ get '/post' do
      image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
      graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
 	clear_session
-	delete_poster file
+	#delete_poster file
 	@no_footer = false
     erb :about
 end 
