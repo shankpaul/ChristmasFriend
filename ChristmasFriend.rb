@@ -36,8 +36,8 @@ OmniAuth.config.on_failure = lambda do |env|
 end
 
 #---------------App configurations---------------
-APP_ID = "224419521074400"
-APP_SECRET = "0fd052c874fcdc5b2ff36b13e1e6e847"
+APP_ID = "795048987178429"
+APP_SECRET = "001c7f7de5838811796f4d4d3fdcf442"
 #------------------------------------------------
 
 use OmniAuth::Builder do
@@ -63,15 +63,15 @@ get '/post' do
     @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
     @friend = graph.get_object(friend)
     @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
-	@no_footer = true
-    kit = IMGKit.new(erb :post, quality: 100)
+    @no_footer = true
     file = "post_pic/#{@profile["id"]}.jpg"
-    kit.to_file(file)
-     image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
-     graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
+    	kit = IMGKit.new(erb :post, quality: 100)
+	kit.to_file(file)
+        image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
+        graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
 	clear_session
 	#delete_poster file
-	@no_footer = false
+        @no_footer = false
     erb :about
 end 
 
@@ -114,8 +114,7 @@ get '/friend' do
   @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
   session['friend'] = @friend['id']
   puts @friend.inspect
- erb :friend
-  
+  redirect '/post'  
 end   
 
 #-----------------Home page ---------------------------------- 
