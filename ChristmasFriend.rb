@@ -114,7 +114,7 @@ get '/friend' do
   @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
   session['friend'] = @friend['id']
   puts @friend.inspect
-  redirect '/post'  
+  erb :friend
 end   
 
 #-----------------Home page ---------------------------------- 
