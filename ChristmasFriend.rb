@@ -36,12 +36,12 @@ OmniAuth.config.on_failure = lambda do |env|
 end
 
 #---------------App configurations---------------
-#APP_ID = "795048987178429"
-#APP_SECRET = "001c7f7de5838811796f4d4d3fdcf442"
+APP_ID = "795048987178429"
+APP_SECRET = "001c7f7de5838811796f4d4d3fdcf442"
 
 
-APP_ID = "224419521074400"
-APP_SECRET = "0fd052c874fcdc5b2ff36b13e1e6e847"
+#APP_ID = "224419521074400"
+#APP_SECRET = "0fd052c874fcdc5b2ff36b13e1e6e847"
 
 #------------------------------------------------
 
