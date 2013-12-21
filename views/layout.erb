@@ -13,12 +13,14 @@
 <script src="js/jquery.snow.min.1.0.js"></script>
 	    <link href="css/style.css" rel="stylesheet">
 		<title>Cristmas Friend</title>
-		<style>
+		<style type="text/css" media="screen">
 			body { font-family: Arial; font-size: 20px ;text-rendering: optimizeLegibility;-webkit-font-smoothing: antialiased;}
 			a { text-decoration: none; color: #333; }
 			.logout a { color: #2554C7; font-size: 15px; }
 			.article { font-size: 1.2em; }
 			.like_site { font-size: 0.8em }
+
+
 		</style>
 <script>
 $(document).ready( function(){
@@ -27,6 +29,7 @@ $(document).ready( function(){
 </script>
 	</head>
 	<body style="margin:0;padding:0;background: #b40202;">
+<div class="mobile">
 		<%= yield %>
 <% unless @no_footer %>
 <div style="text-align:center;color:#FFF;font-size:15px;"><a style="color:#FFF;font-size:15px;" href="about">About Us</a> | 
@@ -46,5 +49,6 @@ $(document).ready( function(){
   ga('send', 'pageview');
 
 </script>
+</div>
 	</body>
 </html>
