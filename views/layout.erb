@@ -2,11 +2,14 @@
 <html >
 	<head>
 		<meta property="og:title" content="Find Your Christmas Friend"/>
-	    <meta property="og:type" content="website"/>
-	    <meta property="og:image" content="http://"/>
-	    <meta property="og:url" content="http://"/>	
+	    <meta property="og:type" content="Facebook Application"/>
+	    <meta property="og:image" content="https://xmasfriend.herokuapp.com/images/gift.png"/>
+	    <meta property="og:url" content="https://xmasfriend.herokuapp.com/"/>
+		<meta property="og:description" content="Xmasfriend is a facebook app created for fun. The will find a christmas friend for you from your friends list. We have created some algorithms to find the friend for you. Please try it and let us know your feedback. Thanks"/>	
 	    <meta name="imgkit-crop-h" content="900">
     	<meta name="imgkit-crop-w" content="333">    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="js/jquery.snow.min.1.0.js"></script>
 	    <link href="css/style.css" rel="stylesheet">
 		<title>Cristmas Friend</title>
 		<style>
@@ -16,6 +19,11 @@
 			.article { font-size: 1.2em; }
 			.like_site { font-size: 0.8em }
 		</style>
+<script>
+$(document).ready( function(){
+        $.fn.snow();
+});
+</script>
 	</head>
 	<body style="margin:0;padding:0;background: #b40202;">
 		<%= yield %>
