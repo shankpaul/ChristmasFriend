@@ -13,22 +13,33 @@ require './helpers/get_post'
 
 enable :sessions
 set :protection, :except => :frame_options
+#disable :protection
+
+#after do
+ # response.headers['X-Frame-Options'] = 'ALLOW-FROM apps.facebook.com' 
+ # response.headers({ 'X-Frame-Options' => 'ALLOW-FROM apps.facebook.com' })
+#end
+
 configure do
   set :redirect_uri, nil
 end
 
 
 
-BASE_URL = "http://localhost:9292"
-APP_URL = "http://localhost.22:9292"
+BASE_URL = "https://xmasfriend.herokuapp.com"
+APP_URL = "https://xmasfriend.herokuapp.com"
+#APP_URL = "https://apps.facebook.com/1402943853278306"
+
 @no_footer = false
 OmniAuth.config.on_failure = lambda do |env|
   [302, {'Location' => '/auth/failure', 'Content-Type' => 'text/html'}, []]
 end
 
 #---------------App configurations---------------
-APP_ID = "1402943853278306"
-APP_SECRET = "a90c7e1ad7fecc7366d94fff2ed4d93b"
+APP_ID = "<APPID>"
+APP_SECRET = "<SECRET>"
+
+
 #------------------------------------------------
 
 use OmniAuth::Builder do
@@ -54,15 +65,15 @@ get '/post' do
     @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
     @friend = graph.get_object(friend)
     @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
-	@no_footer = true
-    kit = IMGKit.new(erb :post, quality: 100)
+    @no_footer = true
     file = "post_pic/#{@profile["id"]}.jpg"
-    kit.to_file(file)
-     image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
-     graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
+    	kit = IMGKit.new(erb :post, quality: 100)
+	kit.to_file(file)
+        image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
+        graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
 	clear_session
-	delete_poster file
-	@no_footer = false
+	#delete_poster file
+        @no_footer = false
     erb :about
 end 
 
@@ -85,10 +96,17 @@ get '/friend' do
   my_dob = Date.strptime @profile["birthday"], '%m/%d/%Y'
   friends.each do |friend|
     begin
-      friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
-      if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
-        suggestion << friend
-      end      
+      if @profile['gender']=="male" && friend['gender']=="female" 	
+	friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+        if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-2
+   		suggestion << friend
+        end      
+      elsif @profile['gender']=="female"
+	friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+        if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
+ 		suggestion << friend
+        end      
+     end
     rescue Exception => e
       puts e.message
     end
@@ -98,22 +116,20 @@ get '/friend' do
   @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
   session['friend'] = @friend['id']
   puts @friend.inspect
- erb :friend
-  
+  erb :friend
 end   
 
 #-----------------Home page ---------------------------------- 
 get_post '/' do
-  verify	
+	
   if session['fb_token']
     graph = Koala::Facebook::API.new(session['fb_token'])
     @profile = graph.get_object("me")
     @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
-    erb :index
-  else
-   redirect '/login'
+  #  else
+ #  redirect '/login'
  end
-
+	  erb :index
 end
 
 #---------Landing page with fb data from successfull Facebook auth ---------
@@ -146,13 +162,7 @@ get '/login' do
   end
 end
 
-get '/logout' do
-	unless session['friend'].nil?
-	   friend = session['friend']
-	   file = "post_pic/#{friend}.jpg"
-	   delete_poster file
-	end
-  
+get '/logout' do	
   clear_session
   redirect '/'
 end
@@ -166,7 +176,7 @@ post '/canvas/' do
   redirect '/auth/failure' if request.params['error'] == 'access_denied'
 
   # see /login
-  settings.redirect_uri = 'https://apps.facebook.com/ChristmasFriend/'
+  settings.redirect_uri = 'https://apps.facebook.com/xmasfriend/'
 
   # Canvas apps send the 'code' parameter
   # We use it to know if we're accessing the app from FB's iFrame

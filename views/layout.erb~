@@ -1,33 +1,57 @@
 <!DOCTYPE HTML>
 <html >
 	<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta property="og:title" content="Find Your Christmas Friend"/>
-	    <meta property="og:type" content="website"/>
-	    <meta property="og:image" content="http://"/>
-	    <meta property="og:url" content="http://"/>	
+	    <meta property="og:type" content="Facebook Application"/>
+	    <meta property="og:image" content="https://xmasfriend.herokuapp.com/images/gift.png"/>
+	    <meta property="og:url" content="https://xmasfriend.herokuapp.com/"/>
+		<meta property="og:description" content="Xmasfriend is a facebook app created for fun. The will find a christmas friend for you from your friends list. We have created some algorithms to find the friend for you. Please try it and let us know your feedback. Thanks"/>	
 	    <meta name="imgkit-crop-h" content="900">
     	<meta name="imgkit-crop-w" content="333">    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="js/jquery.snow.min.1.0.js"></script>
 	    <link href="css/style.css" rel="stylesheet">
 		<title>Cristmas Friend</title>
-		<style>
-			body { font-family: Arial; font-size: 20px ;}
+		<style type="text/css" media="screen">
+			body { font-family: Arial; font-size: 20px ;text-rendering: optimizeLegibility;-webkit-font-smoothing: antialiased;}
 			a { text-decoration: none; color: #333; }
 			.logout a { color: #2554C7; font-size: 15px; }
 			.article { font-size: 1.2em; }
 			.like_site { font-size: 0.8em }
+
+@media (max-width: 450px) {
+.mobile {width:300px;margin:0 auto;}
+
+}
 		</style>
+<script>
+$(document).ready( function(){
+        $.fn.snow();
+});
+</script>
 	</head>
 	<body style="margin:0;padding:0;background: #b40202;">
+<div class="mobile">
 		<%= yield %>
 <% unless @no_footer %>
 <div style="text-align:center;color:#FFF;font-size:15px;"><a style="color:#FFF;font-size:15px;" href="about">About Us</a> | 
 <a style="color:#FFF;font-size:15px;" href="<%= BASE_URL %>">ChristmasFriend V 1.0.0</a> 
-
-<% unless  session['fb_token'].nil? %>
-|
+<% unless  session['fb_token'].nil? %>|
 <a style="color:#FFF;font-size:15px;" href="logout">Logout</a>
 <% end %>
 </div>
 <% end %>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46603083-1', 'xmasfriend.herokuapp.com');
+  ga('send', 'pageview');
+
+</script>
+</div>
 	</body>
 </html>

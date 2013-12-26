@@ -36,12 +36,9 @@ OmniAuth.config.on_failure = lambda do |env|
 end
 
 #---------------App configurations---------------
-APP_ID = "795048987178429"
-APP_SECRET = "001c7f7de5838811796f4d4d3fdcf442"
+APP_ID = "<APPID>"
+APP_SECRET = "<SECRET>"
 
-
-#APP_ID = "224419521074400"
-#APP_SECRET = "0fd052c874fcdc5b2ff36b13e1e6e847"
 
 #------------------------------------------------
 
@@ -168,24 +165,6 @@ end
 get '/logout' do	
   clear_session
   redirect '/'
-end
-
-# access point from FB, Canvas URL and Secure Canvas URL must be point to this route
-# Canvas URL: http://your_app/canvas/
-# Secure Canvas URL: https://your_app:443/canvas/
-post '/canvas/' do
-
-  # User didn't grant us permission in the oauth dialog
-  redirect '/auth/failure' if request.params['error'] == 'access_denied'
-
-  # see /login
-  settings.redirect_uri = 'https://apps.facebook.com/xmasfriend/'
-
-  # Canvas apps send the 'code' parameter
-  # We use it to know if we're accessing the app from FB's iFrame
-  # If so, we try to autologin
-  url = request.params['code'] ? "/auth/facebook?signed_request=#{request.params['signed_request']}&state=canvas" : '/login'
-  redirect url
 end
 
 
