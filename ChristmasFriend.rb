@@ -47,7 +47,7 @@ use OmniAuth::Builder do
 end
 
 def verify
-redirect '/login' if session['fb_token'].nil?
+  redirect '/login' if session['fb_token'].nil?
 end
 
 
@@ -55,26 +55,33 @@ get '/about' do
   erb :about
 end
 
+get '/tree/:fbid' do
+   @image = "post_pic/#{params[:fbid]}.jpg"
+   erb :tree
+end
 
 
 get '/post' do
-   verify
-  friend = session['friend']
-   graph = Koala::Facebook::API.new(session['fb_token'])
-    @profile = graph.get_object("me")
-    @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
-    @friend = graph.get_object(friend)
-    @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
-    @no_footer = true
-    file = "post_pic/#{@profile["id"]}.jpg"
-    	kit = IMGKit.new(erb :post, quality: 100)
-	kit.to_file(file)
-        image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
-        graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
-	clear_session
+ verify
+ friend = session['friend']
+ graph = Koala::Facebook::API.new(session['fb_token'])
+ @profile = graph.get_object("me")
+ @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
+ @friend = graph.get_object(friend)
+ @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
+ @no_footer = true
+ file = "post_pic/#{@profile["id"]}.jpg"
+ kit = IMGKit.new(erb :post, quality: 100)
+ kit.to_file(file)
+ # post image in facebook
+ image = graph.put_picture(file,  {:message => "#{@friend["first_name"]} #{@friend["last_name"]} is my christmas friend. \n Click #{APP_URL} to find your christmas friend"})
+ # tag friends to picture
+ graph.put_connections(image["id"], 'tags', {"to" => @friend["id"]})
+ clear_session
+  #--delete created image from local folder
 	#delete_poster file
-        @no_footer = false
-    erb :about
+  @no_footer = false
+  erb :about
 end 
 
 def delete_poster file
@@ -97,26 +104,26 @@ get '/friend' do
   friends.each do |friend|
     begin
       if @profile['gender']=="male" && friend['gender']=="female" 	
-	friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
-        if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-2
-   		suggestion << friend
-        end      
-      elsif @profile['gender']=="female"
-	friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
-        if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
- 		suggestion << friend
-        end      
+       friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+       if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-2
+         suggestion << friend
+       end      
+     elsif @profile['gender']=="female"
+       friend_dob = Date.strptime friend["birthday"], '%m/%d/%Y'
+       if friend_dob.year <= my_dob.year+5 && friend_dob.year >= my_dob.year-5
+         suggestion << friend
+       end      
      end
-    rescue Exception => e
-      puts e.message
-    end
+   rescue Exception => e
+    puts e.message
   end
-  @friend = suggestion[Random.rand(suggestion.count)]
-  @friend = graph.get_object(@friend['id'])
-  @friend["image"] = graph.get_picture(@friend["id"],:type => "large")
-  session['friend'] = @friend['id']
-  puts @friend.inspect
-  erb :friend
+end
+@friend = suggestion[Random.rand(suggestion.count)]
+@friend = graph.get_object(@friend['id'])
+@friend["image"] = graph.get_picture(@friend["id"],:type => "large")
+session['friend'] = @friend['id']
+puts @friend.inspect
+erb :friend
 end   
 
 #-----------------Home page ---------------------------------- 
@@ -128,8 +135,8 @@ get_post '/' do
     @profile["image"] = graph.get_picture(@profile["id"],:type => "large")
   #  else
  #  redirect '/login'
- end
-	  erb :index
+end
+erb :index
 end
 
 #---------Landing page with fb data from successfull Facebook auth ---------
